@@ -40,6 +40,14 @@ const run = async () => {
         res.send(task);
     });
 
+    //update task by id
+    app.put("/task/:id", async (req, res) => {
+        const id = req.params.id;
+        const task = req.body;
+        await tasksCollection.updateOne({ _id: ObjectId(id) }, { $set: task });
+        res.send(task);
+    });
+
     console.log("Connected to MongoDB");
   } finally {
   }
