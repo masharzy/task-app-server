@@ -20,13 +20,21 @@ const run = async () => {
     await client.connect();
     const tasksCollection = client.db("todo").collection("tasks");
 
+
+    //get all tasks
+    app.get("/tasks", async (req, res) => {
+        const tasks = await tasksCollection.find({}).toArray();
+        res.send(tasks);
+    }
+    );
     
     // post a task
-    app.post("/task", (req, res) => {
-      const task = req.body;
-      tasksCollection.insertOne(task);
-      res.send(task);
-    });
+    app.post("/tasks", async (req, res) => {
+        const task = req.body;
+        await tasksCollection.insertOne(task);
+        res.send(task);
+    }
+    );
 
     console.log("Connected to MongoDB");
   } finally {
