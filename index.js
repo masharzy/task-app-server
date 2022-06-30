@@ -48,6 +48,20 @@ const run = async () => {
         res.send(task);
     });
 
+    //change status to completed by id
+    app.put("/task/:id/complete", async (req, res) => {
+        const id = req.params.id;
+        const task = await tasksCollection.findOne({ _id: ObjectId(id) });
+        await tasksCollection.updateOne({ _id: ObjectId(id) }, { $set: { completed: true } });
+        res.send(task);
+    });
+
+    //get all completed tasks
+    app.get("/tasks/completed", async (req, res) => {
+        const tasks = await tasksCollection.find({ completed: true }).toArray();
+        res.send(tasks);
+    });
+
     console.log("Connected to MongoDB");
   } finally {
   }
